@@ -2,10 +2,28 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Mankit</title>
+    <title>Mankit - eWeLink</title>
 </head>
 <body>
     <h2>Mankit</h2>
-    <p>eWeLink authorization completed.</p>
+    <p id="status">Получаем результат авторизации eWeLink...</p>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const code = params.get("code");
+        const error = params.get("error");
+
+        if (code) {
+            document.getElementById("status").innerHTML =
+                "Авторизация eWeLink успешна.<br><br>" +
+                "Код получен.";
+        } else if (error) {
+            document.getElementById("status").innerHTML =
+                "Ошибка авторизации eWeLink: " + error;
+        } else {
+            document.getElementById("status").innerHTML =
+                "Страница Mankit готова к авторизации eWeLink.";
+        }
+    </script>
 </body>
 </html>
