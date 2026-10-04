@@ -6,23 +6,33 @@
 </head>
 <body>
     <h2>Mankit</h2>
-    <p id="status">Получаем результат авторизации eWeLink...</p>
+    <p>Подключение eWeLink...</p>
 
     <script>
         const params = new URLSearchParams(window.location.search);
+
         const code = params.get("code");
+        const region = params.get("region");
+        const state = params.get("state");
         const error = params.get("error");
 
-        if (code) {
-            document.getElementById("status").innerHTML =
-                "Авторизация eWeLink успешна.<br><br>" +
-                "Код получен.";
-        } else if (error) {
-            document.getElementById("status").innerHTML =
-                "Ошибка авторизации eWeLink: " + error;
+        if (error) {
+            document.body.innerHTML =
+                "<h2>Ошибка eWeLink</h2><p>" + error + "</p>";
+        } else if (code) {
+            const worker =
+                "https://mankit-ewelink.miningshopx11.workers.dev/callback";
+
+            const target = new URL(worker);
+            target.searchParams.set("code", code);
+
+            if (region) target.searchParams.set("region", region);
+            if (state) target.searchParams.set("state", state);
+
+            window.location.replace(target.toString());
         } else {
-            document.getElementById("status").innerHTML =
-                "Страница Mankit готова к авторизации eWeLink.";
+            document.body.innerHTML =
+                "<h2>Код авторизации не получен</h2>";
         }
     </script>
 </body>
